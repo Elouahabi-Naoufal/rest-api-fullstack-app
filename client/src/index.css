@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 353 100% 98%; /* #FFF9F9 */
+  --foreground: 28 20% 45%; /* #aa7c44 */
+  --muted: 353 100% 96%;
+  --muted-foreground: 28 20% 60%;
+  --popover: 353 100% 98%;
+  --popover-foreground: 28 20% 45%;
+  --card: 0 0% 100%;
+  --card-foreground: 28 20% 45%;
+  --border: 28 20% 85%;
+  --input: 28 20% 85%;
+  --primary: 186 48% 80%; /* #b6e1e6 */
+  --primary-foreground: 28 20% 45%;
+  --secondary: 38 86% 56%; /* #f0a92d */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 28 35% 52%; /* #aa7c44 */
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 28 20% 45%;
+  --radius: 0.5rem;
+  --sidebar-background: 186 48% 80%; /* #b6e1e6 */
+  --sidebar-foreground: 28 20% 45%;
+  --sidebar-primary: 28 20% 45%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 38 86% 56%; /* #f0a92d */
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 28 20% 85%;
+  --sidebar-ring: 28 20% 45%;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 186 48% 80%;
+  --primary-foreground: 28 20% 45%;
+  --secondary: 38 86% 56%;
+  --secondary-foreground: 0 0% 100%;
+  --accent: 28 35% 52%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --sidebar-background: 186 48% 80%;
+  --sidebar-foreground: 28 20% 45%;
+  --sidebar-primary: 28 20% 45%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 38 86% 56%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 28 20% 85%;
+  --sidebar-ring: 28 20% 45%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.shadow-custom {
+  box-shadow: 0 4px 6px -1px rgba(170, 124, 68, 0.1);
+}
