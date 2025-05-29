@@ -4,10 +4,13 @@ import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
 import Dashboard from "@/components/dashboard";
 import Inventory from "@/components/inventory";
+import Orders from "@/components/orders";
+import Analytics from "@/components/analytics";
 import Users from "@/components/users";
+import ActivityLogComponent from "@/components/activity-log";
 import Reports from "@/components/reports";
 
-type Section = "dashboard" | "inventory" | "users" | "reports";
+type Section = "dashboard" | "inventory" | "orders" | "analytics" | "users" | "activity" | "reports";
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -20,8 +23,14 @@ export default function HomePage() {
         return <Dashboard />;
       case "inventory":
         return <Inventory searchQuery={searchQuery} />;
+      case "orders":
+        return <Orders />;
+      case "analytics":
+        return <Analytics />;
       case "users":
         return <Users />;
+      case "activity":
+        return <ActivityLogComponent />;
       case "reports":
         return <Reports />;
       default:
@@ -41,10 +50,25 @@ export default function HomePage() {
           title: "Inventory Management",
           description: "Manage your cheesecake inventory"
         };
+      case "orders":
+        return {
+          title: "Order Management",
+          description: "Track and manage customer orders"
+        };
+      case "analytics":
+        return {
+          title: "Analytics & Insights",
+          description: "Sales trends and performance metrics"
+        };
       case "users":
         return {
           title: "User Management",
           description: "Manage system users and permissions"
+        };
+      case "activity":
+        return {
+          title: "Activity Log",
+          description: "Track user actions and system changes"
         };
       case "reports":
         return {

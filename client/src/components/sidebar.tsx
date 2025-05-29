@@ -1,9 +1,9 @@
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { Cake, LayoutDashboard, Package, Users, BarChart3, LogOut } from "lucide-react";
+import { Cake, LayoutDashboard, Package, Users, BarChart3, LogOut, ShoppingCart, TrendingUp, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Section = "dashboard" | "inventory" | "users" | "reports";
+type Section = "dashboard" | "inventory" | "orders" | "analytics" | "users" | "activity" | "reports";
 
 interface SidebarProps {
   currentSection: Section;
