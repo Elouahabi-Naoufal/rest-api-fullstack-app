@@ -1,6 +1,6 @@
 import { users, inventoryItems, type User, type InsertUser, type InventoryItem, type InsertInventoryItem, type UpdateInventoryItem } from "@shared/schema";
 import { db } from "./db";
-import { eq, ilike, or, desc } from "drizzle-orm";
+import { eq, ilike, or, desc, sql, and } from "drizzle-orm";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
 import { pool } from "./db";
@@ -29,11 +29,11 @@ export interface IStorage {
     totalValue: number;
   }>;
   
-  sessionStore: session.SessionStore;
+  sessionStore: any;
 }
 
 export class DatabaseStorage implements IStorage {
-  sessionStore: session.SessionStore;
+  sessionStore: any;
 
   constructor() {
     this.sessionStore = new PostgresSessionStore({ 
@@ -83,8 +83,6 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getInventoryItems(search?: string, category?: string, status?: string): Promise<InventoryItem[]> {
-    let query = db.select().from(inventoryItems);
-    
     const conditions = [];
     
     if (search) {
@@ -111,10 +109,10 @@ export class DatabaseStorage implements IStorage {
     }
     
     if (conditions.length > 0) {
-      query = query.where(and(...conditions));
+      return await db.select().from(inventoryItems).where(and(...conditions)).orderBy(desc(inventoryItems.updatedAt));
     }
     
-    return await query.orderBy(desc(inventoryItems.updatedAt));
+    return await db.select().from(inventoryItems).orderBy(desc(inventoryItems.updatedAt));
   }
 
   async getInventoryItem(id: number): Promise<InventoryItem | undefined> {

@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Edit, Trash2, Grid3X3, List } from "lucide-react";
+import { Plus, Edit, Trash2, Grid3X3, List, Package } from "lucide-react";
 import { InventoryItem } from "@shared/schema";
 import AddItemModal from "@/components/modals/add-item-modal";
 import { Skeleton } from "@/components/ui/skeleton";
