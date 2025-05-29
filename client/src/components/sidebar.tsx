@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { Cake, LayoutDashboard, Package, Users, BarChart3, LogOut, ShoppingCart, TrendingUp, FileText } from "lucide-react";
+import { Cake, LayoutDashboard, Package, Users, BarChart3, LogOut, ShoppingCart, TrendingUp, FileText, Tag, CheckSquare, Bell, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Section = "dashboard" | "inventory" | "orders" | "analytics" | "categories" | "tasks" | "alerts" | "export" | "users" | "activity" | "reports";
@@ -28,15 +28,57 @@ export default function Sidebar({ currentSection, onSectionChange, userRole }: S
       allowedRoles: ["admin", "staff"]
     },
     {
+      id: "orders" as Section,
+      label: "Orders",
+      icon: ShoppingCart,
+      allowedRoles: ["admin", "staff"]
+    },
+    {
+      id: "analytics" as Section,
+      label: "Analytics",
+      icon: BarChart3,
+      allowedRoles: ["admin", "staff"]
+    },
+    {
+      id: "categories" as Section,
+      label: "Categories",
+      icon: Tag,
+      allowedRoles: ["admin", "staff"]
+    },
+    {
+      id: "tasks" as Section,
+      label: "Tasks",
+      icon: CheckSquare,
+      allowedRoles: ["admin", "staff"]
+    },
+    {
+      id: "alerts" as Section,
+      label: "Alerts",
+      icon: Bell,
+      allowedRoles: ["admin", "staff"]
+    },
+    {
+      id: "export" as Section,
+      label: "Data Export",
+      icon: Download,
+      allowedRoles: ["admin", "staff"]
+    },
+    {
       id: "users" as Section,
       label: "Users",
       icon: Users,
       allowedRoles: ["admin"]
     },
     {
+      id: "activity" as Section,
+      label: "Activity Log",
+      icon: TrendingUp,
+      allowedRoles: ["admin", "staff"]
+    },
+    {
       id: "reports" as Section,
       label: "Reports",
-      icon: BarChart3,
+      icon: FileText,
       allowedRoles: ["admin", "staff"]
     }
   ];

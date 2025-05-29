@@ -6,11 +6,15 @@ import Dashboard from "@/components/dashboard";
 import Inventory from "@/components/inventory";
 import Orders from "@/components/orders";
 import Analytics from "@/components/analytics";
+import Categories from "@/components/categories";
+import Tasks from "@/components/tasks";
+import Alerts from "@/components/alerts";
+import DataExport from "@/components/data-export";
 import Users from "@/components/users";
 import ActivityLogComponent from "@/components/activity-log";
 import Reports from "@/components/reports";
 
-type Section = "dashboard" | "inventory" | "orders" | "analytics" | "users" | "activity" | "reports";
+type Section = "dashboard" | "inventory" | "orders" | "analytics" | "categories" | "tasks" | "alerts" | "export" | "users" | "activity" | "reports";
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -27,6 +31,14 @@ export default function HomePage() {
         return <Orders />;
       case "analytics":
         return <Analytics />;
+      case "categories":
+        return <Categories />;
+      case "tasks":
+        return <Tasks />;
+      case "alerts":
+        return <Alerts />;
+      case "export":
+        return <DataExport />;
       case "users":
         return <Users />;
       case "activity":
@@ -59,6 +71,26 @@ export default function HomePage() {
         return {
           title: "Analytics & Insights",
           description: "Sales trends and performance metrics"
+        };
+      case "categories":
+        return {
+          title: "Category Management",
+          description: "Organize inventory items by categories"
+        };
+      case "tasks":
+        return {
+          title: "Task Management",
+          description: "Assign and track staff tasks"
+        };
+      case "alerts":
+        return {
+          title: "Alert Management",
+          description: "Monitor system alerts and notifications"
+        };
+      case "export":
+        return {
+          title: "Data Export",
+          description: "Export inventory and order data"
         };
       case "users":
         return {
