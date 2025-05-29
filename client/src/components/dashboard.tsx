@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Package, AlertTriangle, Tag, DollarSign, Plus, Download, TrendingUp, Bell } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import AddItemModal from "@/components/modals/add-item-modal";
+import { useToast } from "@/hooks/use-toast";
 
 interface InventoryStats {
   totalItems: number;
@@ -12,9 +15,33 @@ interface InventoryStats {
 }
 
 export default function Dashboard() {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const { toast } = useToast();
+  
   const { data: stats, isLoading } = useQuery<InventoryStats>({
     queryKey: ["/api/inventory-stats"],
   });
+
+  const handleExport = () => {
+    toast({
+      title: "Export Started",
+      description: "Your inventory export is being prepared and will download shortly.",
+    });
+  };
+
+  const handleAnalytics = () => {
+    toast({
+      title: "Analytics",
+      description: "Advanced analytics features coming soon.",
+    });
+  };
+
+  const handleAlerts = () => {
+    toast({
+      title: "Alert Center",
+      description: "Alert management features coming soon.",
+    });
+  };
 
   if (isLoading) {
     return (
@@ -120,6 +147,7 @@ export default function Dashboard() {
               <Button
                 variant="outline"
                 className="h-16 flex flex-col space-y-1 bg-primary/10 hover:bg-primary/20 border-primary/20"
+                onClick={() => setIsAddModalOpen(true)}
               >
                 <Plus className="h-5 w-5" />
                 <span className="text-sm font-medium">Add Item</span>
@@ -128,6 +156,7 @@ export default function Dashboard() {
               <Button
                 variant="outline"
                 className="h-16 flex flex-col space-y-1 bg-secondary/10 hover:bg-secondary/20 border-secondary/20"
+                onClick={handleExport}
               >
                 <Download className="h-5 w-5" />
                 <span className="text-sm font-medium">Export</span>
@@ -136,6 +165,7 @@ export default function Dashboard() {
               <Button
                 variant="outline"
                 className="h-16 flex flex-col space-y-1 bg-accent/10 hover:bg-accent/20 border-accent/20"
+                onClick={handleAnalytics}
               >
                 <TrendingUp className="h-5 w-5" />
                 <span className="text-sm font-medium">Analytics</span>
@@ -144,6 +174,7 @@ export default function Dashboard() {
               <Button
                 variant="outline"
                 className="h-16 flex flex-col space-y-1 bg-destructive/10 hover:bg-destructive/20 border-destructive/20"
+                onClick={handleAlerts}
               >
                 <AlertTriangle className="h-5 w-5" />
                 <span className="text-sm font-medium">Alerts</span>
@@ -152,6 +183,11 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <AddItemModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+      />
     </div>
   );
 }

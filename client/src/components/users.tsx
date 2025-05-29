@@ -136,7 +136,11 @@ export default function Users() {
                 <div className="flex items-center justify-between">
                   {getRoleBadge(user.role)}
                   <div className="flex items-center space-x-1">
-                    <Button variant="ghost" size="sm">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => handleEditUser(user)}
+                    >
                       <Edit className="h-4 w-4" />
                     </Button>
                     {user.id !== currentUser?.id && (

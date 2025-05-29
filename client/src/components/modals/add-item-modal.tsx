@@ -81,12 +81,12 @@ export default function AddItemModal({ isOpen, onClose, editItem }: AddItemModal
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            Add New Item
+            {isEditing ? "Edit Item" : "Add New Item"}
             <Button
               variant="ghost"
               size="sm"
               onClick={handleClose}
-              disabled={createItemMutation.isPending}
+              disabled={saveItemMutation.isPending}
             >
               <X className="h-4 w-4" />
             </Button>
@@ -101,7 +101,7 @@ export default function AddItemModal({ isOpen, onClose, editItem }: AddItemModal
                 id="name"
                 {...form.register("name")}
                 placeholder="Enter product name"
-                disabled={createItemMutation.isPending}
+                disabled={saveItemMutation.isPending}
               />
               {form.formState.errors.name && (
                 <p className="text-sm text-destructive mt-1">
@@ -116,7 +116,7 @@ export default function AddItemModal({ isOpen, onClose, editItem }: AddItemModal
                 id="sku"
                 {...form.register("sku")}
                 placeholder="Enter SKU"
-                disabled={createItemMutation.isPending}
+                disabled={saveItemMutation.isPending}
               />
               {form.formState.errors.sku && (
                 <p className="text-sm text-destructive mt-1">
@@ -132,7 +132,7 @@ export default function AddItemModal({ isOpen, onClose, editItem }: AddItemModal
               <Select
                 value={form.watch("category")}
                 onValueChange={(value) => form.setValue("category", value)}
-                disabled={createItemMutation.isPending}
+                disabled={saveItemMutation.isPending}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select category" />
@@ -158,7 +158,7 @@ export default function AddItemModal({ isOpen, onClose, editItem }: AddItemModal
                 step="0.01"
                 {...form.register("price")}
                 placeholder="0.00"
-                disabled={createItemMutation.isPending}
+                disabled={saveItemMutation.isPending}
               />
               {form.formState.errors.price && (
                 <p className="text-sm text-destructive mt-1">
@@ -176,7 +176,7 @@ export default function AddItemModal({ isOpen, onClose, editItem }: AddItemModal
                 type="number"
                 {...form.register("stock", { valueAsNumber: true })}
                 placeholder="0"
-                disabled={createItemMutation.isPending}
+                disabled={saveItemMutation.isPending}
               />
               {form.formState.errors.stock && (
                 <p className="text-sm text-destructive mt-1">
@@ -192,7 +192,7 @@ export default function AddItemModal({ isOpen, onClose, editItem }: AddItemModal
                 type="number"
                 {...form.register("lowStockAlert", { valueAsNumber: true })}
                 placeholder="5"
-                disabled={createItemMutation.isPending}
+                disabled={saveItemMutation.isPending}
               />
               {form.formState.errors.lowStockAlert && (
                 <p className="text-sm text-destructive mt-1">
@@ -209,7 +209,7 @@ export default function AddItemModal({ isOpen, onClose, editItem }: AddItemModal
               {...form.register("description")}
               placeholder="Enter product description"
               rows={3}
-              disabled={createItemMutation.isPending}
+              disabled={saveItemMutation.isPending}
             />
             {form.formState.errors.description && (
               <p className="text-sm text-destructive mt-1">
@@ -223,22 +223,22 @@ export default function AddItemModal({ isOpen, onClose, editItem }: AddItemModal
               type="button"
               variant="outline"
               onClick={handleClose}
-              disabled={createItemMutation.isPending}
+              disabled={saveItemMutation.isPending}
             >
               Cancel
             </Button>
             <Button
               type="submit"
               className="bg-secondary hover:bg-secondary/90"
-              disabled={createItemMutation.isPending}
+              disabled={saveItemMutation.isPending}
             >
-              {createItemMutation.isPending ? (
+              {saveItemMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Adding...
+                  {isEditing ? "Updating..." : "Adding..."}
                 </>
               ) : (
-                "Add Item"
+                isEditing ? "Update Item" : "Add Item"
               )}
             </Button>
           </div>
