@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,6 +9,8 @@ import { Plus, Edit, Trash2, Grid3X3, List, Package } from "lucide-react";
 import { InventoryItem } from "@shared/schema";
 import AddItemModal from "@/components/modals/add-item-modal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 interface InventoryProps {
   searchQuery: string;
@@ -19,6 +21,8 @@ export default function Inventory({ searchQuery }: InventoryProps) {
   const [status, setStatus] = useState<string>("All Status");
   const [viewMode, setViewMode] = useState<"table" | "grid">("table");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
+  const { toast } = useToast();
 
   const { data: items = [], isLoading } = useQuery<InventoryItem[]>({
     queryKey: ["/api/inventory", { search: searchQuery, category, status }],
@@ -41,6 +45,38 @@ export default function Inventory({ searchQuery }: InventoryProps) {
       return <Badge variant="secondary" className="bg-orange-100 text-orange-800">Low Stock</Badge>;
     } else {
       return <Badge variant="default" className="bg-green-100 text-green-800">In Stock</Badge>;
+    }
+  };
+
+  const deleteItemMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/inventory/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/inventory"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/inventory-stats"] });
+      toast({
+        title: "Item deleted",
+        description: "Inventory item has been successfully deleted.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Delete failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleEditItem = (item: InventoryItem) => {
+    setEditingItem(item);
+    setIsAddModalOpen(true);
+  };
+
+  const handleDeleteItem = (id: number) => {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      deleteItemMutation.mutate(id);
     }
   };
 
@@ -180,10 +216,19 @@ export default function Inventory({ searchQuery }: InventoryProps) {
                       <TableCell>{getStatusBadge(item)}</TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => handleEditItem(item)}
+                          >
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-destructive hover:text-destructive"
+                            onClick={() => handleDeleteItem(item.id)}
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -199,7 +244,11 @@ export default function Inventory({ searchQuery }: InventoryProps) {
 
       <AddItemModal
         isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setEditingItem(null);
+        }}
+        editItem={editingItem}
       />
     </div>
   );

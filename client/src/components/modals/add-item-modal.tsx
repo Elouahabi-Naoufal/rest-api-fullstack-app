@@ -8,50 +8,57 @@ import { Textarea } from "@/components/ui/textarea";
 import { X, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertInventoryItemSchema, InsertInventoryItem } from "@shared/schema";
+import { insertInventoryItemSchema, InsertInventoryItem, InventoryItem } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 
 interface AddItemModalProps {
   isOpen: boolean;
   onClose: () => void;
+  editItem?: InventoryItem | null;
 }
 
-export default function AddItemModal({ isOpen, onClose }: AddItemModalProps) {
+export default function AddItemModal({ isOpen, onClose, editItem }: AddItemModalProps) {
   const { toast } = useToast();
+  const isEditing = !!editItem;
   
   const form = useForm<InsertInventoryItem>({
     resolver: zodResolver(insertInventoryItemSchema),
     defaultValues: {
-      name: "",
-      sku: "",
-      category: "",
-      description: "",
-      price: "0",
-      stock: 0,
-      lowStockAlert: 5,
-      imageUrl: "",
+      name: editItem?.name || "",
+      sku: editItem?.sku || "",
+      category: editItem?.category || "",
+      description: editItem?.description || "",
+      price: editItem?.price || "0",
+      stock: editItem?.stock || 0,
+      lowStockAlert: editItem?.lowStockAlert || 5,
+      imageUrl: editItem?.imageUrl || "",
     },
   });
 
-  const createItemMutation = useMutation({
+  const saveItemMutation = useMutation({
     mutationFn: async (data: InsertInventoryItem) => {
-      const response = await apiRequest("POST", "/api/inventory", data);
-      return response.json();
+      if (isEditing && editItem) {
+        const response = await apiRequest("PUT", `/api/inventory/${editItem.id}`, data);
+        return response.json();
+      } else {
+        const response = await apiRequest("POST", "/api/inventory", data);
+        return response.json();
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/inventory"] });
       queryClient.invalidateQueries({ queryKey: ["/api/inventory-stats"] });
       toast({
-        title: "Item added",
-        description: "Inventory item has been successfully added.",
+        title: isEditing ? "Item updated" : "Item added",
+        description: `Inventory item has been successfully ${isEditing ? "updated" : "added"}.`,
       });
       form.reset();
       onClose();
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to add item",
+        title: `Failed to ${isEditing ? "update" : "add"} item`,
         description: error.message,
         variant: "destructive",
       });
@@ -59,11 +66,11 @@ export default function AddItemModal({ isOpen, onClose }: AddItemModalProps) {
   });
 
   const onSubmit = (data: InsertInventoryItem) => {
-    createItemMutation.mutate(data);
+    saveItemMutation.mutate(data);
   };
 
   const handleClose = () => {
-    if (!createItemMutation.isPending) {
+    if (!saveItemMutation.isPending) {
       form.reset();
       onClose();
     }
