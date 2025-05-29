@@ -1,4 +1,4 @@
-import { users, inventoryItems, type User, type InsertUser, type InventoryItem, type InsertInventoryItem, type UpdateInventoryItem } from "@shared/schema";
+import { users, inventoryItems, orders, orderItems, categories, activityLogs, tasks, alerts, notes, type User, type InsertUser, type InventoryItem, type InsertInventoryItem, type UpdateInventoryItem, type Order, type InsertOrder, type Category, type InsertCategory, type Task, type InsertTask, type Alert, type ActivityLog, type Note, type InsertNote } from "@shared/schema";
 import { db } from "./db";
 import { eq, ilike, or, desc, sql, and } from "drizzle-orm";
 import session from "express-session";

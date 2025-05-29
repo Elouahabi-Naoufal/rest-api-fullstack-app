@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Cake, LayoutDashboard, Package, Users, BarChart3, LogOut, ShoppingCart, TrendingUp, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Section = "dashboard" | "inventory" | "orders" | "analytics" | "users" | "activity" | "reports";
+type Section = "dashboard" | "inventory" | "orders" | "analytics" | "categories" | "tasks" | "alerts" | "export" | "users" | "activity" | "reports";
 
 interface SidebarProps {
   currentSection: Section;
