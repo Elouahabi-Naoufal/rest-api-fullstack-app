@@ -16,6 +16,7 @@ export default function Users() {
   const { user: currentUser } = useAuth();
   const { toast } = useToast();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
 
   const { data: users = [], isLoading } = useQuery<User[]>({
     queryKey: ["/api/users"],
@@ -51,6 +52,11 @@ export default function Users() {
     ) : (
       <Badge variant="default" className="bg-green-100 text-green-800">Staff</Badge>
     );
+  };
+
+  const handleEditUser = (user: User) => {
+    setEditingUser(user);
+    setIsAddModalOpen(true);
   };
 
   const handleDeleteUser = (userId: number) => {
@@ -164,7 +170,11 @@ export default function Users() {
 
       <AddUserModal
         isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setEditingUser(null);
+        }}
+        editUser={editingUser}
       />
     </div>
   );
